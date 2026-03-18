@@ -1,16 +1,17 @@
 import { useState } from 'react';
+
 import './index.css';
 
 // Данные
 const HERO_SLIDES = [
   {
-    img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&q=80',
+    img: '/images/hero.jpg',  // или './images/hero.jpg'
     title: 'Твоё будущее начинается здесь',
     subtitle: 'Тольяттинский социально-педагогический колледж',
     label: 'Приём документов с 1 июня 2026',
   },
   {
-    img: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&q=80',
+    img: '/images/hero.jpg',  // пока одно фото, потом добавите второе
     title: 'Выбери свою специальность',
     subtitle: '10 направлений подготовки',
     label: 'Бюджетные и платные места',
@@ -107,26 +108,26 @@ const NEWS = [
 ];
 
 const TEACHERS = [
-  { name: 'Ряполова Е. О.', subject: 'Английский язык', exp: '?', img: '👩‍🏫' },
-  { name: 'Романова Т. Н.', subject: 'Информатика', exp: '?', img: '👨‍💻' },
-  { name: 'Олейников Ю А.', subject: 'Физкультура', exp: '?', img: '🏃‍♀️' },
-  { name: 'Романова Т. Н.', subject: 'Математика', exp: '?', img: '🧑‍🏫' },
+  { name: 'Иванова М.И.', subject: 'Педагогика', exp: '15 лет', img: '👩‍🏫' },
+  { name: 'Петров А.В.', subject: 'Информатика', exp: '12 лет', img: '👨‍💻' },
+  { name: 'Сидорова Е.П.', subject: 'Физкультура', exp: '20 лет', img: '🏃‍♀️' },
+  { name: 'Козлов Д.Н.', subject: 'Психология', exp: '10 лет', img: '🧑‍🏫' },
 ];
 
 const REVIEWS = [
   {
-    name: 'Седов Никита',
-    year: 'Выпуск 2028',
+    name: 'Анна Смирнова',
+    year: 'Выпуск 2024',
     text: 'Очень благодарна колледжу за знания и поддержку. Сейчас работаю воспитателем в детском саду.',
   },
   {
-    name: 'Скрыльников Артур',
-    year: 'Выпуск 2028',
+    name: 'Дмитрий Иванов',
+    year: 'Выпуск 2023',
     text: 'Отличная база для поступления в вуз. Преподаватели настоящие профессионалы!',
   },
   {
-    name: 'Арбитраженко Тимур',
-    year: 'Студент 2 курса',
+    name: 'Елена Петрова',
+    year: 'Студентка 3 курса',
     text: 'Учусь на программиста, очень нравится современное оборудование и практика.',
   },
 ];
@@ -179,16 +180,19 @@ function App() {
         </div>
       </div>
 
-
+      {/* Герой с фото на весь экран */}
       <HeroSection openModal={openModal} />
 
+      {/* Статистика */}
       <StatsSection />
 
-
+      {/* Специальности */}
       <SpecialtiesSection openModal={openModal} />
 
+      {/* Шаги поступления */}
       <StepsSection />
 
+      {/* Преподаватели */}
       <TeachersSection />
 
       {/* Новости */}
@@ -220,27 +224,47 @@ function App() {
   );
 }
 
-// Герой
+// Герой с фото на весь экран (исправлено!)
 function HeroSection({ openModal }) {
   const [slide, setSlide] = useState(0);
 
   const nextSlide = () => setSlide(slide === 0 ? 1 : 0);
+  const prevSlide = () => setSlide(slide === 1 ? 0 : 1);
 
   return (
     <div className="hero">
-      <img src={HERO_SLIDES[slide].img} alt="hero" />
+      {/* Фото на весь экран */}
+      <img src="./images/hero.jpg" alt="hero" className="hero-image" />
+
+      {/* Затемнение для читаемости текста */}
       <div className="hero-overlay"></div>
-      <div className="container hero-content">
-        <span className="hero-label">{HERO_SLIDES[slide].label}</span>
-        <h1>{HERO_SLIDES[slide].title}</h1>
-        <p>{HERO_SLIDES[slide].subtitle}</p>
-        <div className="hero-btns">
-          <button className="btn btn-large" onClick={() => openModal()}>
-            Подать заявку
-          </button>
-          <button className="btn btn-outline" onClick={nextSlide}>
-            Далее
-          </button>
+
+      {/* Контент поверх фото */}
+      <div className="hero-content">
+        <div className="container">
+          <span className="hero-label">{HERO_SLIDES[slide].label}</span>
+          <h1>{HERO_SLIDES[slide].title}</h1>
+          <p>{HERO_SLIDES[slide].subtitle}</p>
+          <div className="hero-btns">
+            <button className="btn btn-large" onClick={() => openModal()}>
+              Подать заявку
+            </button>
+            <button className="btn btn-outline" onClick={nextSlide}>
+              Следующее фото
+            </button>
+          </div>
+
+          {/* Индикатор слайдов */}
+          <div className="hero-dots">
+            <span
+              className={`dot ${slide === 0 ? 'active' : ''}`}
+              onClick={() => setSlide(0)}
+            ></span>
+            <span
+              className={`dot ${slide === 1 ? 'active' : ''}`}
+              onClick={() => setSlide(1)}
+            ></span>
+          </div>
         </div>
       </div>
     </div>
@@ -534,7 +558,7 @@ function Footer({ openModal }) {
 
           <div className="footer-col">
             <h4>Мы в соцсетях</h4>
-            <p>📱 ВКонтакте: vk.com/tspk63</p>
+            <p>📱 ВКонтакте: vk.com/tspk_live</p>
             <p>📱 Telegram: @tspk_official</p>
           </div>
         </div>
