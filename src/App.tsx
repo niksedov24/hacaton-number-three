@@ -1,17 +1,17 @@
 import { useState } from 'react';
-
 import './index.css';
+import { ChevronRight } from 'lucide-react';
 
 // Данные
 const HERO_SLIDES = [
   {
-    img: '/images/hero.jpg',  // или './images/hero.jpg'
+    img: 'https://avatars.mds.yandex.net/get-altay/4336915/2a0000017758c7aacd777df5b4b053fdecf5/L_height',
     title: 'Твоё будущее начинается здесь',
     subtitle: 'Тольяттинский социально-педагогический колледж',
     label: 'Приём документов с 1 июня 2026',
   },
   {
-    img: '/images/hero.jpg',  // пока одно фото, потом добавите второе
+    img: 'https://sun9-64.userapi.com/impf/Gw6yftMfPK7mKf8ZvwyOvT48ZCbJyw1LWJDgEg/e6lr_AulRoU.jpg?size=1920x768&quality=95&crop=19,91,1154,462&sign=bbad2b75d5ec0cdeb548b588412cc1a6&type=cover_group',
     title: 'Выбери свою специальность',
     subtitle: '10 направлений подготовки',
     label: 'Бюджетные и платные места',
@@ -108,26 +108,26 @@ const NEWS = [
 ];
 
 const TEACHERS = [
-  { name: 'Иванова М.И.', subject: 'Педагогика', exp: '15 лет', img: '👩‍🏫' },
-  { name: 'Петров А.В.', subject: 'Информатика', exp: '12 лет', img: '👨‍💻' },
-  { name: 'Сидорова Е.П.', subject: 'Физкультура', exp: '20 лет', img: '🏃‍♀️' },
-  { name: 'Козлов Д.Н.', subject: 'Психология', exp: '10 лет', img: '🧑‍🏫' },
+  { name: 'Ряполова Е. О.', subject: 'Английский язык', exp: '?', img: '👩‍🏫' },
+  { name: 'Романова Т. Н.', subject: 'Информатика', exp: '?', img: '👨‍💻' },
+  { name: 'Олейников Ю А.', subject: 'Физкультура', exp: '?', img: '🏃‍♀️' },
+  { name: 'Романова Т. Н.', subject: 'Математика', exp: '?', img: '🧑‍🏫' },
 ];
 
 const REVIEWS = [
   {
-    name: 'Анна Смирнова',
-    year: 'Выпуск 2024',
+    name: 'Арбитраженко Тимурко',
+    year: 'Выпуск 2028',
     text: 'Очень благодарна колледжу за знания и поддержку. Сейчас работаю воспитателем в детском саду.',
   },
   {
-    name: 'Дмитрий Иванов',
-    year: 'Выпуск 2023',
-    text: 'Отличная база для поступления в вуз. Преподаватели настоящие профессионалы!',
+    name: 'Скрыльников Артур',
+    year: 'Выпуск 2028',
+    text: 'Отличная база для будущего поступления в вуз. Преподаватели настоящие профессионалы!',
   },
   {
-    name: 'Елена Петрова',
-    year: 'Студентка 3 курса',
+    name: 'Седов Никита',
+    year: 'Студент 2 курса',
     text: 'Учусь на программиста, очень нравится современное оборудование и практика.',
   },
 ];
@@ -154,6 +154,8 @@ const FAQ = [
 ];
 
 function App() {
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [noSeatsOpen, setNoSeatsOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSpec, setSelectedSpec] = useState('');
 
@@ -180,26 +182,23 @@ function App() {
         </div>
       </div>
 
-      {/* Герой с фото на весь экран */}
+
       <HeroSection openModal={openModal} />
 
-      {/* Статистика */}
       <StatsSection />
 
-      {/* Специальности */}
+
       <SpecialtiesSection openModal={openModal} />
 
-      {/* Шаги поступления */}
       <StepsSection />
 
-      {/* Преподаватели */}
       <TeachersSection />
 
       {/* Новости */}
-      <NewsSection />
+      <NewsSection onDetailsClick={() => setComingSoonOpen(true)} />
 
       {/* Мероприятия */}
-      <EventsSection />
+      <EventsSection onRegisterClick={() => setNoSeatsOpen(true)} />
 
       {/* Отзывы */}
       <ReviewsSection />
@@ -220,51 +219,59 @@ function App() {
           onClose={() => setModalOpen(false)}
         />
       )}
+      {comingSoonOpen && (
+  <div className="modal" onClick={() => setComingSoonOpen(false)}>
+    <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Скоро...</h2>
+      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
+        Всё будет, но не сразу.
+      </p>
+      <button className="btn btn-full" onClick={() => setComingSoonOpen(false)}>
+        Понятно
+      </button>
+      <button className="modal-close" onClick={() => setComingSoonOpen(false)}>×</button>
+    </div>
+  </div>
+)}
+{noSeatsOpen && (
+  <div className="modal" onClick={() => setNoSeatsOpen(false)}>
+    <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Мест НЕТ</h2>
+      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
+        К сожалению, все места на это мероприятие уже заняты.<br />
+        Следите за новыми событиями!
+      </p>
+      <button className="btn btn-full" onClick={() => setNoSeatsOpen(false)}>
+        Понятно
+      </button>
+      <button className="modal-close" onClick={() => setNoSeatsOpen(false)}>×</button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
 
-// Герой с фото на весь экран (исправлено!)
 function HeroSection({ openModal }) {
   const [slide, setSlide] = useState(0);
 
   const nextSlide = () => setSlide(slide === 0 ? 1 : 0);
-  const prevSlide = () => setSlide(slide === 1 ? 0 : 1);
 
   return (
     <div className="hero">
-      {/* Фото на весь экран */}
-      <img src="./images/hero.jpg" alt="hero" className="hero-image" />
-
-      {/* Затемнение для читаемости текста */}
+      <img src={HERO_SLIDES[slide].img} alt="hero" />
       <div className="hero-overlay"></div>
-
-      {/* Контент поверх фото */}
-      <div className="hero-content">
-        <div className="container">
-          <span className="hero-label">{HERO_SLIDES[slide].label}</span>
-          <h1>{HERO_SLIDES[slide].title}</h1>
-          <p>{HERO_SLIDES[slide].subtitle}</p>
-          <div className="hero-btns">
-            <button className="btn btn-large" onClick={() => openModal()}>
-              Подать заявку
-            </button>
-            <button className="btn btn-outline" onClick={nextSlide}>
-              Следующее фото
-            </button>
-          </div>
-
-          {/* Индикатор слайдов */}
-          <div className="hero-dots">
-            <span
-              className={`dot ${slide === 0 ? 'active' : ''}`}
-              onClick={() => setSlide(0)}
-            ></span>
-            <span
-              className={`dot ${slide === 1 ? 'active' : ''}`}
-              onClick={() => setSlide(1)}
-            ></span>
-          </div>
+      <div className="container hero-content">
+        <span className="hero-label">{HERO_SLIDES[slide].label}</span>
+        <h1>{HERO_SLIDES[slide].title}</h1>
+        <p>{HERO_SLIDES[slide].subtitle}</p>
+        <div className="hero-btns">
+          <button className="btn btn-large" onClick={() => openModal()}>
+            Подать заявку
+          </button>
+          <button className="btn btn-outline" onClick={nextSlide}>
+            <ChevronRight size={32} />
+          </button>
         </div>
       </div>
     </div>
@@ -411,8 +418,7 @@ function TeachersSection() {
   );
 }
 
-// Новости
-function NewsSection() {
+function NewsSection({ onDetailsClick }: { onDetailsClick: () => void }) {
   return (
     <div id="news" className="section gray">
       <div className="container">
@@ -423,7 +429,12 @@ function NewsSection() {
               <div className="news-date">{item.date}</div>
               <h3>{item.title}</h3>
               <p>{item.desc}</p>
-              <button className="btn btn-small btn-outline">Подробнее</button>
+              <button 
+                className="btn btn-small btn-outline" 
+                onClick={onDetailsClick}
+              >
+                Подробнее
+              </button>
             </div>
           ))}
         </div>
@@ -432,8 +443,7 @@ function NewsSection() {
   );
 }
 
-// Мероприятия
-function EventsSection() {
+function EventsSection({ onRegisterClick }: { onRegisterClick: () => void }) {
   return (
     <div id="events" className="section">
       <div className="container">
@@ -446,7 +456,7 @@ function EventsSection() {
                 <h3>{event.title}</h3>
                 <p>{event.place}</p>
               </div>
-              <button className="btn btn-small">Записаться</button>
+              <button className="btn btn-small" onClick={onRegisterClick}>Записаться</button>
             </div>
           ))}
         </div>
@@ -455,7 +465,7 @@ function EventsSection() {
   );
 }
 
-// Отзывы
+// comm
 function ReviewsSection() {
   return (
     <div id="reviews" className="section gray">
@@ -464,7 +474,7 @@ function ReviewsSection() {
         <div className="reviews-grid">
           {REVIEWS.map((review, i) => (
             <div key={i} className="review-card">
-              <div className="review-quote">"</div>
+              <div className="review-quote"></div>
               <p className="review-text">{review.text}</p>
               <div className="review-author">
                 <strong>{review.name}</strong>
@@ -497,9 +507,8 @@ function PartnersSection() {
   );
 }
 
-// FAQ
 function FAQSection() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <div id="faq" className="section gray">
@@ -507,17 +516,21 @@ function FAQSection() {
         <h2 className="section-title">Часто задаваемые вопросы</h2>
         <div className="faq-list">
           {FAQ.map((item, i) => (
-            <div key={i} className="faq-item">
+            <div key={i} className={`faq-item ${openIndex === i ? 'open' : ''}`}>
               <button
                 className="faq-question"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
               >
                 <span>{item.q}</span>
-                <span className="faq-icon">{openIndex === i ? '−' : '+'}</span>
+                <span className="faq-icon-wrapper">
+                  <span className="faq-icon">{openIndex === i ? '−' : '+'}</span>
+                </span>
               </button>
-              {openIndex === i && (
-                <div className="faq-answer">{item.a}</div>
-              )}
+              <div className="faq-answer">
+                <div className="faq-answer-inner">
+                  {item.a}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -525,7 +538,6 @@ function FAQSection() {
     </div>
   );
 }
-
 // Футер
 function Footer({ openModal }) {
   return (
@@ -558,16 +570,13 @@ function Footer({ openModal }) {
 
           <div className="footer-col">
             <h4>Мы в соцсетях</h4>
-            <p>📱 ВКонтакте: vk.com/tspk_live</p>
+            <p>📱 ВКонтакте: vk.com/tspk63</p>
             <p>📱 Telegram: @tspk_official</p>
           </div>
         </div>
 
         <div className="footer-bottom">
           <p>© 2026 ГАПОУ «ТСПК»</p>
-          <button className="btn btn-small" onClick={() => openModal()}>
-            Подать заявку
-          </button>
         </div>
       </div>
     </footer>
@@ -669,5 +678,6 @@ function ApplicationModal({ spec, onClose }) {
     </div>
   );
 }
+
 
 export default App;
