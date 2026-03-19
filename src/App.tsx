@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import './index.css';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 
-// Данные
 const HERO_SLIDES = [
   {
     img: 'https://avatars.mds.yandex.net/get-altay/4336915/2a0000017758c7aacd777df5b4b053fdecf5/L_height',
@@ -166,7 +165,6 @@ function App() {
 
   return (
     <div className="app">
-      {/* Навигация */}
       <div className="navbar">
         <div className="container nav-container">
           <div className="logo">ТСПК</div>
@@ -182,37 +180,18 @@ function App() {
         </div>
       </div>
 
-
       <HeroSection openModal={openModal} />
-
       <StatsSection />
-
-
       <SpecialtiesSection openModal={openModal} />
-
       <StepsSection />
-
       <TeachersSection />
-
-      {/* Новости */}
       <NewsSection onDetailsClick={() => setComingSoonOpen(true)} />
-
-      {/* Мероприятия */}
       <EventsSection onRegisterClick={() => setNoSeatsOpen(true)} />
-
-      {/* Отзывы */}
       <ReviewsSection />
-
-      {/* Партнёры */}
       <PartnersSection />
-
-      {/* FAQ */}
       <FAQSection />
-
-      {/* Контакты */}
       <Footer openModal={openModal} />
 
-      {/* Модалка */}
       {modalOpen && (
         <ApplicationModal
           spec={selectedSpec}
@@ -220,34 +199,34 @@ function App() {
         />
       )}
       {comingSoonOpen && (
-  <div className="modal" onClick={() => setComingSoonOpen(false)}>
-    <div className="modal-content" onClick={e => e.stopPropagation()}>
-      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Скоро...</h2>
-      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
-        Всё будет, но не сразу.
-      </p>
-      <button className="btn btn-full" onClick={() => setComingSoonOpen(false)}>
-        Понятно
-      </button>
-      <button className="modal-close" onClick={() => setComingSoonOpen(false)}>×</button>
-    </div>
-  </div>
-)}
-{noSeatsOpen && (
-  <div className="modal" onClick={() => setNoSeatsOpen(false)}>
-    <div className="modal-content" onClick={e => e.stopPropagation()}>
-      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Мест НЕТ</h2>
-      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
-        К сожалению, все места на это мероприятие уже заняты.<br />
-        Следите за новыми событиями!
-      </p>
-      <button className="btn btn-full" onClick={() => setNoSeatsOpen(false)}>
-        Понятно
-      </button>
-      <button className="modal-close" onClick={() => setNoSeatsOpen(false)}>×</button>
-    </div>
-  </div>
-)}
+        <div className="modal" onClick={() => setComingSoonOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Скоро...</h2>
+            <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
+              Всё будет, но не сразу.
+            </p>
+            <button className="btn btn-full" onClick={() => setComingSoonOpen(false)}>
+              Понятно
+            </button>
+            <button className="modal-close" onClick={() => setComingSoonOpen(false)}>×</button>
+          </div>
+        </div>
+      )}
+      {noSeatsOpen && (
+        <div className="modal" onClick={() => setNoSeatsOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Мест НЕТ</h2>
+            <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
+              К сожалению, все места на это мероприятие уже заняты.<br />
+              Следите за новыми событиями!
+            </p>
+            <button className="btn btn-full" onClick={() => setNoSeatsOpen(false)}>
+              Понятно
+            </button>
+            <button className="modal-close" onClick={() => setNoSeatsOpen(false)}>×</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -256,11 +235,20 @@ function HeroSection({ openModal }) {
   const [slide, setSlide] = useState(0);
 
   const nextSlide = () => setSlide(slide === 0 ? 1 : 0);
+  const prevSlide = () => setSlide(slide === 1 ? 0 : 1);
 
   return (
     <div className="hero">
       <img src={HERO_SLIDES[slide].img} alt="hero" />
       <div className="hero-overlay"></div>
+
+      <button className="hero-arrow hero-arrow-left" onClick={prevSlide}>
+        <ChevronLeft size={36} />
+      </button>
+      <button className="hero-arrow hero-arrow-right" onClick={nextSlide}>
+        <ChevronRight size={36} />
+      </button>
+
       <div className="container hero-content">
         <span className="hero-label">{HERO_SLIDES[slide].label}</span>
         <h1>{HERO_SLIDES[slide].title}</h1>
@@ -269,16 +257,23 @@ function HeroSection({ openModal }) {
           <button className="btn btn-large" onClick={() => openModal()}>
             Подать заявку
           </button>
-          <button className="btn btn-outline" onClick={nextSlide}>
-            <ChevronRight size={32} />
-          </button>
+        </div>
+
+        <div className="hero-dots">
+          <span
+            className={`dot ${slide === 0 ? 'active' : ''}`}
+            onClick={() => setSlide(0)}
+          ></span>
+          <span
+            className={`dot ${slide === 1 ? 'active' : ''}`}
+            onClick={() => setSlide(1)}
+          ></span>
         </div>
       </div>
     </div>
   );
 }
 
-// Статистика
 function StatsSection() {
   return (
     <div className="stats">
@@ -314,7 +309,6 @@ function StatsSection() {
   );
 }
 
-// Специальности
 function SpecialtiesSection({ openModal }) {
   const [activeTab, setActiveTab] = useState('Все');
   const categories = ['Все', 'Педагогика', 'IT', 'Спорт', 'Социальная сфера'];
@@ -377,7 +371,6 @@ function SpecialtiesSection({ openModal }) {
   );
 }
 
-// Шаги поступления
 function StepsSection() {
   return (
     <div className="section gray">
@@ -397,7 +390,6 @@ function StepsSection() {
   );
 }
 
-// Преподаватели
 function TeachersSection() {
   return (
     <div id="teachers" className="section">
@@ -418,7 +410,7 @@ function TeachersSection() {
   );
 }
 
-function NewsSection({ onDetailsClick }: { onDetailsClick: () => void }) {
+function NewsSection({ onDetailsClick }) {
   return (
     <div id="news" className="section gray">
       <div className="container">
@@ -429,8 +421,8 @@ function NewsSection({ onDetailsClick }: { onDetailsClick: () => void }) {
               <div className="news-date">{item.date}</div>
               <h3>{item.title}</h3>
               <p>{item.desc}</p>
-              <button 
-                className="btn btn-small btn-outline" 
+              <button
+                className="btn btn-small btn-outline"
                 onClick={onDetailsClick}
               >
                 Подробнее
@@ -443,7 +435,7 @@ function NewsSection({ onDetailsClick }: { onDetailsClick: () => void }) {
   );
 }
 
-function EventsSection({ onRegisterClick }: { onRegisterClick: () => void }) {
+function EventsSection({ onRegisterClick }) {
   return (
     <div id="events" className="section">
       <div className="container">
@@ -465,7 +457,6 @@ function EventsSection({ onRegisterClick }: { onRegisterClick: () => void }) {
   );
 }
 
-// comm
 function ReviewsSection() {
   return (
     <div id="reviews" className="section gray">
@@ -488,7 +479,6 @@ function ReviewsSection() {
   );
 }
 
-// Партнёры
 function PartnersSection() {
   return (
     <div className="section">
@@ -508,7 +498,7 @@ function PartnersSection() {
 }
 
 function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState(null);
 
   return (
     <div id="faq" className="section gray">
@@ -538,7 +528,7 @@ function FAQSection() {
     </div>
   );
 }
-// Футер
+
 function Footer({ openModal }) {
   return (
     <footer id="contacts" className="footer">
@@ -583,7 +573,6 @@ function Footer({ openModal }) {
   );
 }
 
-// Модалка заявки
 function ApplicationModal({ spec, onClose }) {
   const [form, setForm] = useState({
     name: '',
@@ -678,6 +667,5 @@ function ApplicationModal({ spec, onClose }) {
     </div>
   );
 }
-
 
 export default App;
